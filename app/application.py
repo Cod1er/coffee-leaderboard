@@ -5,8 +5,8 @@ import time
 
 application = Flask(__name__)
 
-AWS_ACCESS_KEY_ID="AKIAJ6JMH4DE4ERZ5SDA"
-AWS_SECRET_ACCESS_KEY="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"
+AWS_ACCESS_KEY_ID=""
+AWS_SECRET_ACCESS_KEY=""
 client = boto3.client('dynamodb', aws_access_key_id=AWS_ACCESS_KEY_ID,
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name='us-east-1'
 )
