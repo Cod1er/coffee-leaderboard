@@ -5,14 +5,8 @@ import time
 
 application = Flask(__name__)
 
-AWS_ACCESS_KEY_ID=""
-AWS_SECRET_ACCESS_KEY=""
-client = boto3.client('dynamodb', aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name='us-east-1'
-)
-s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name='us-east-1'
-)
+client = boto3.client('dynamodb', region_name='us-east-1')
+s3 = boto3.client('s3', region_name='us-east-1')
 
 @application.route("/")
 def main():    
