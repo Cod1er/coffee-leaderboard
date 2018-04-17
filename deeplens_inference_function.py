@@ -6,7 +6,7 @@ import time
 import awscam
 import cv2
 import random, string
-import boto3
+from botocore.session import Session
 from threading import Thread
 
 client = greengrasssdk.client('iot-data')
@@ -65,8 +65,6 @@ def greengrass_infinite_infer_run():
 		doInfer = True
 		onCountdown = False
 
-		s3=boto3.client('s3')
-
 		while doInfer:
 			# Get a frame from the video stream
 			ret, frame = awscam.getLastFrame()
@@ -104,14 +102,15 @@ def greengrass_infinite_infer_run():
 					if onCountdown and time_now >= countdown:
 						message = "uploading to s3..."
 						client.publish(topic=iotTopic, payload = message)
-						cv2.imwrite('/tmp/frame.jpg', frame)
-						data = open('/tmp/frame.jpg', 'rb')
-						result = s3.put_object(
-							Bucket= bucket_name,
-							Key='images/frame-' + time.strftime("%Y%m%d-%H%M%S") + '.jpg',
-							Body=data
-						)
-						message = "uploaded to s3: " + str(result["ETag"])
+
+						key = 'images/frame-' + time.strftime("%Y%m%d-%H%M%S") + '.jpg'
+						session = Session()
+						s3 = session.create_client('s3')
+
+						_, jpg_data = cv2.imencode('.jpg', frame)
+						result = s3.put_object(Body=jpg_data.tostring(), Bucket=bucket_name, Key=key)
+
+						message = "uploaded to s3: " + key)
 						client.publish(topic=iotTopic, payload = message)
 						cooldown = time_now + datetime.timedelta(seconds = 10)
 						onCountdown = False
