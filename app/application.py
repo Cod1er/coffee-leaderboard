@@ -7,7 +7,6 @@ application = Flask(__name__)
 
 client = boto3.client('dynamodb', region_name='us-east-1')
 s3 = boto3.client('s3', region_name='us-east-1')
-bucket_name = '<BUCKET_NAME>'
 
 @application.route("/")
 def main():    
@@ -20,8 +19,8 @@ def main():
         url = s3.generate_presigned_url(
             'get_object',
             Params={
-                'Bucket': bucket_name,
-                'Key': face['pathToImage']['S'],
+                'Bucket': 'coffee-leaderboard',
+                'Key':  face['pathToImage']['S'],
             },                                  
             ExpiresIn=5
         )
