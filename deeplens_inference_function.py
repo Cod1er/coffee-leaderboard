@@ -127,7 +127,7 @@ def greengrass_infinite_infer_run():
 						_, jpg_data = cv2.imencode('.jpg', frame)
 						result = s3.put_object(Body=jpg_data.tostring(), Bucket=bucket_name, Key=key)
 
-						message = "uploaded to s3: " + key)
+						message = "uploaded to s3: " + key
 						client.publish(topic=iotTopic, payload = message)
 						cooldown = time_now + datetime.timedelta(seconds = 10)
 						onCountdown = False

@@ -114,7 +114,7 @@ def detect_faces(image, bucket, key):
 
         # Check if there are no faces in the image:
         if len(faces['FaceRecords']) == 0:
-           dynamodb.put_item( 
+            dynamodb.put_item( 
                 TableName=logging_table,
                 Item={
                     'unixtime': {'S': str(utime)},
